@@ -1,6 +1,7 @@
 import { Controller, Post, Get, Body, Request, UseGuards } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { AuthGuard } from './auth.guard';
+import { Public } from './public.decorator';
 import { IsEmail, IsNotEmpty, IsOptional, IsIn, MinLength } from 'class-validator';
 
 export class RegisterDto {
@@ -31,11 +32,13 @@ export class LoginDto {
 export class AuthController {
   constructor(private authService: AuthService) {}
 
+  @Public()
   @Post('register')
   async register(@Body() dto: RegisterDto) {
     return this.authService.register(dto.email, dto.senha, dto.nome, dto.role);
   }
 
+  @Public()
   @Post('login')
   async login(@Body() dto: LoginDto) {
     return this.authService.login(dto.email, dto.senha);
